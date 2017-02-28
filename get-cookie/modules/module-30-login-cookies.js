@@ -85,7 +85,8 @@ function getAuthResult() {
       status: 'success',
       data:{
           SACSID:"",
-          csrftoken: ""
+          csrftoken: "",
+          payload_v: "",
       }
     };
     for(var i in cookies) {
@@ -98,7 +99,11 @@ function getAuthResult() {
             result.data.csrftoken = cookies[i].value;
         }
     }
-
+    var html = page.content;
+    var payloadRe = /gen_dashboard_(\w*)/g ;
+    var payloadArray = payloadRe.exec(html);
+    announce("payload_v:" + payloadArray[1]);
+    result.data.payload_v = payloadArray[1];
     return result;
 }
 
