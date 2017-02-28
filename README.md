@@ -31,7 +31,11 @@ PhantomJs下载链接：http://phantomjs.org/download.html
             "errorMsg":"login failed: wrong email and/or password"
         }
         
- 4. 调试模式：为简化调用，默认情况下调试模式会被禁用，命令行仅输出最终结果，不输出任何中间信息。
+
+    
+ 
+ ####附加说明
+ - 调试模式：为简化调用，默认情况下调试模式会被禁用，命令行仅输出最终结果，不输出任何中间信息。
  
     若想得到更多输出用以帮助调试，修改get-cookie/modules/module-20-config.js以启用调试模式：
 
@@ -39,9 +43,8 @@ PhantomJs下载链接：http://phantomjs.org/download.html
                debugEnable: true,
                ......
            };
-    
- 
- ####附加说明
+
+
  - 在网络环境变化（如IP变更）时，可能会触发Google二次验证导致授权失败(此时一般用浏览器登陆一下、手动完成一次二次校验就好了)
  - 同一帐号连续登录次数过多，貌似也会触发二次校验^v^
  - phantomjs的具体使用，可以参考其文档：http://phantomjs.org/quick-start.html
