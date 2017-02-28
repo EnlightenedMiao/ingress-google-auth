@@ -12,6 +12,7 @@
 /*global ice */
 
 var system    = require('system');
+var args      = system.args;
 var fs        = require('fs');
 var iceFolder = 'get-cookie/modules/';
 var iceModules= fs.list(iceFolder);
@@ -29,6 +30,4 @@ function loadModules() {
 }
 
 loadModules();
-
-removeCookies();
 window.setTimeout(firePlainLogin, 1000);

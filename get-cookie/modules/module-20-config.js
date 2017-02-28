@@ -1,23 +1,27 @@
-/**
- * @file Ingress-ICE, configurations
- * @license MIT
- */
-
 /*global fs */
 /*global quit */
 /*global args */
 /* global config */
 
+if(!args[1] || !args[2]){
+    quitWithError("command args error: login email and password is necessary");
+}
+
 var config = {
+    debugEnable: false,
     area: 'https://www.ingress.com/intel',
-    login: 'SvetlanaCynthiade93@gmail.com',
-    password: 'Ool8ooz2Ee9',
+    login: args[1],
+    password: args[2],
+    securityEmail: '',
     cookiespath: 'cookie.txt',
     loginTimeout: 10000,
     timezone:false
 };
 var cookiespath = config.cookiespath;
 var loginTimeout = config.loginTimeout;
+
+announce("config:" + JSON.stringify(config));
+
 
 /**
  * twostep auth trigger

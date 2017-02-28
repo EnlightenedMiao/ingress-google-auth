@@ -1,7 +1,3 @@
-/**
- * @file Ingress-ICE, everything related to cookies login
- * @license MIT
- */
 
 /*global announce */
 /*global config */
@@ -63,49 +59,6 @@ function addCookies(sacsid, csrf) {
   });
 }
 
-
-/**
- * Does all stuff needed after cookie authentication
- * @since 3.1.0
- */
-// function afterCookieLogin() {
-//   page.open(config.area, function(status) {
-//     if (status !== 'success') {quit('unable to connect to remote server')}
-//
-//     if(!isSignedIn()) {
-//       if(fs.exists(cookiespath)) {
-//         fs.remove(cookiespath);
-//       }
-//       if(config.login && config.password) {
-//         page.deleteCookie('SACSID');
-//         page.deleteCookie('csrftoken');
-//         firePlainLogin();
-//         return;
-//       } else {
-//         quit('Cookies are obsolete. Update your config file.');
-//       }
-//     }
-//     if (config.iitc) {
-//       addIitc();
-//     }
-//     setTimeout(function() {
-//       announce('Will start screenshooting in ' + config.delay/1000 + ' seconds...');
-//       if (((config.minlevel > 1)||(config.maxlevel < 8)) && !config.iitc) {
-//         setMinMax(config.minlevel, config.maxlevel, config.iitc);
-//       } else if (!config.iitc) {
-//         page.evaluate(function() {
-//           document.querySelector("#filters_container").style.display= 'none';
-//         });
-//       }
-//       hideDebris(config.iitc);
-//       prepare(config.iitc, config.width, config.height);
-//       announce('The first screenshot may not contain all portals, it is intended for you to check framing.');
-//       main();
-//       setInterval(main, config.delay);
-//     }, loginTimeout);
-//   });
-// }
-
 /**
  * Checks if user is signed in by looking for the "Sign in" button
  * @returns {boolean}
@@ -124,6 +77,31 @@ function storeCookies() {
     fs.write(cookiespath, cookies[i].name + '=' + cookies[i].value +'\n', 'a');
   }
 }
+
+function getAuthResult() {
+    var cookies = page.cookies;
+    announce("cookies:" + cookies);
+    var result = {
+      status: 'success',
+      data:{
+          SACSID:"",
+          csrftoken: ""
+      }
+    };
+    for(var i in cookies) {
+        if(cookies[i].name=='SACSID'){
+            announce("SACSID:" + cookies[i].value);
+            result.data.SACSID = cookies[i].value;
+        }
+        if(cookies[i].name=='csrftoken'){
+            announce("csrftoken:" + cookies[i].value);
+            result.data.csrftoken = cookies[i].value;
+        }
+    }
+
+    return result;
+}
+
 
 function removeCookies() {
   if(fs.exists(cookiespath)){

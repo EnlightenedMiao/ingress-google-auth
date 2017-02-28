@@ -1,8 +1,3 @@
-/**
- * @file Ingress-ICE, everything related to plain login
- * @license MIT
- */
-
 /*global announce */
 /*global config */
 /*global page */
@@ -23,7 +18,7 @@
 function firePlainLogin() {
   page.open('https://www.ingress.com/intel', function (status) {
 
-    if (status !== 'success') {quit('unable to connect to remote server')}
+    if (status !== 'success') {quitWithError('unable to connect to remote server')}
 
     var link = page.evaluate(function () {
       return document.getElementsByTagName('a')[0].href;
@@ -62,7 +57,7 @@ function login(l, p) {
     window.setTimeout(function () {
       announce('Validating login credentials...');
       if (page.url.substring(0,40) === 'https://accounts.google.com/ServiceLogin') {
-        quit('login failed: wrong email and/or password');
+        quitWithError('login failed: wrong email and/or password');
       }
 
       if (page.url.substring(0,40) === 'https://appengine.google.com/_ah/loginfo') {
@@ -73,12 +68,16 @@ function login(l, p) {
         });
       }
 
+      // announce(page.url);
+      // announce(page.url.substring(0,44));
       if (page.url.substring(0,44) === 'https://accounts.google.com/signin/challenge') {
-        announce('Using two-step verification, please enter your code:');
+        output('Using two-step verification, please enter your code:');
         twostep = system.stdin.readLine();
       }
 
+      announce("two-step code:" + twostep);
       if (twostep) {
+          // announce("not has totpPin: " + !(document.getElementById('totpPin')));
         page.evaluate(function (code) {
           document.getElementById('totpPin').value = code;
         }, twostep);
@@ -99,13 +98,12 @@ function login(l, p) {
 function afterPlainLogin() {
   page.open(config.area, function() {
     if (!isSignedIn()) {
-      announce('Something went wrong. Please, sign in to Google via your browser and restart ICE. ');
-      quit();
+      quitWithError('Something went wrong. Please, sign in to Google via your browser and restart ICE. ');
     }
     window.setTimeout(function() {
-      storeCookies();
-      announce('Update cookie success! ');
-      quit();
+      // storeCookies();
+      var authResult = getAuthResult();
+      quitWithResult(authResult);
     }, loginTimeout/10);
   });
 }

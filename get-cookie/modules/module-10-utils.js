@@ -1,17 +1,19 @@
-/**
- * @file Ingress-ICE, common utilities, not related to Google/Niantic
- * @license MIT
- */
-
 /*global version */
 /*global phantom */
 
 /**
- * console.log() wrapper
+ * console.log() wrapper, work only in debug mode
  * @param {String} str - what to announce
  */
 function announce(str) {
-  console.log(getDateTime(0, config.timezone) + ': ' + str);
+  // console.log(getDateTime(0, config.timezone) + ': ' + str);
+    if(config.debugEnable){
+        console.log(str);
+    }
+}
+//output to cosole
+function output(str) {
+    console.log(str);
 }
 
 /**
@@ -60,19 +62,34 @@ function getDateTime(format, timezone) {
  * Quit if an error occured
  * @param {String} err - the error text
  */
-function quit(err) {
-  if (err) {
-    announce('ICE crashed. Reason: ' + err + ' :(');
-  } else {
-    announce('Quit');
-  }
+function quitWithError(errorMsg) {
+  var result = {
+      status: 'error',
+      errorMsg: errorMsg,
+  };
+  quitWithResult(result);
+}
+
+function quitWithResult(result) {
+  output(JSON.stringify(result));
   phantom.exit();
 }
+
+function quit(msg) {
+    if(msg){
+      announce(msg);
+      quit(msg)
+    }
+    else {
+      quit();
+    }
+}
+
 
 /**
  * Greeter. Beautiful ASCII-Art logo.
  */
 function greet() {
-  console.log('\n     _____ )   ___      _____) \n    (, /  (__/_____)  /        \n      /     /         )__      \n  ___/__   /        /          \n(__ /     (______) (_____)  v' + version + '\n\nIf you need help or want a new feature, visit https://github.com/nibogd/ingress-ice/issues');
+  output('\n     _____ )   ___      _____) \n    (, /  (__/_____)  /        \n      /     /         )__      \n  ___/__   /        /          \n(__ /     (______) (_____)  v' + version + '\n\nIf you need help or want a new feature, visit https://github.com/nibogd/ingress-ice/issues');
 }
 
