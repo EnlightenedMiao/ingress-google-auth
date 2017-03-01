@@ -72,7 +72,7 @@ function login(l, p) {
       // announce(page.url.substring(0,44));
       if (page.url.substring(0,44) === 'https://accounts.google.com/signin/challenge') {
         output('Using two-step verification, please enter your code:');
-        twostep = system.stdin.readLine();
+        twostep = 'wedontneedtwosetp';
       }
 
       announce("two-step code:" + twostep);
