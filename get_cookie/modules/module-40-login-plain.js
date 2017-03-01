@@ -71,21 +71,9 @@ function login(l, p) {
       // announce(page.url);
       // announce(page.url.substring(0,44));
       if (page.url.substring(0,44) === 'https://accounts.google.com/signin/challenge') {
-        output('Using two-step verification, please enter your code:');
-        twostep = 'wedontneedtwosetp';
+        quitWithError('Fuck !!! Two-step verification is triggered! Auto exit !\n(You can login your ingress intel in browser using current user account and current IP to resolve this problem)');
       }
 
-      announce("two-step code:" + twostep);
-      if (twostep) {
-          // announce("not has totpPin: " + !(document.getElementById('totpPin')));
-        page.evaluate(function (code) {
-          document.getElementById('totpPin').value = code;
-        }, twostep);
-        page.evaluate(function () {
-          document.getElementById('submit').click();
-          document.getElementById('challenge').submit();
-        });
-      }
       window.setTimeout(afterPlainLogin, loginTimeout);
     }, loginTimeout)
   }, loginTimeout / 10);
