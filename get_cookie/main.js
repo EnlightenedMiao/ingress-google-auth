@@ -14,7 +14,7 @@
 var system    = require('system');
 var args      = system.args;
 var fs        = require('fs');
-var iceFolder = 'get-cookie/modules/';
+var iceFolder = 'get_cookie/modules/';
 var iceModules= fs.list(iceFolder);
 
 /*
