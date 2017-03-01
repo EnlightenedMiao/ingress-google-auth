@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM python:3.4
 
 # Install runtime dependencies
 RUN apt-get update \
@@ -32,10 +32,14 @@ RUN set -x  \
  && useradd --system --uid 72379 -m --shell /usr/sbin/nologin phantomjs \
  && su phantomjs -s /bin/sh -c "phantomjs --version"
 
+RUN pip install redis
+
+ENV CELERY_VERSION 4.0.2
+
+RUN pip install celery=="$CELERY_VERSION"
+ENV CELERY_BROKER_URL amqp://guest@rabbit
+
 USER phantomjs
+COPY . /tmp/
 WORKDIR /tmp/
-EXPOSE 8910
-
-ENTRYPOINT ["dumb-init"]
-CMD ["phantomjs"]
-
+CMD ["celery","worker","-l","info"]

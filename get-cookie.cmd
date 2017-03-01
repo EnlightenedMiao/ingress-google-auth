@@ -1,1 +1,0 @@
-phantomjs get-cookie/main.js <login-email> <password>
