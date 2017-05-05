@@ -29,5 +29,6 @@ announce("config:" + JSON.stringify(config));
 var twostep      = 0;
 var webpage      = require('webpage');
 var page         = webpage.create();
+page.settings.userAgent = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; WOW64; Trident/4.0; SLCC1)';
 page.onConsoleMessage = function() {};
 page.onError  = function() {};
