@@ -1,4 +1,4 @@
 import os
-broker_url = os.environ.get('CELERY_BROKER_URL', 'amqp://')
+broker_url = 'redis://redis'
 imports = ('tasks',)
-result_backend = os.environ.get('CELERY_BROKER_URL', 'amqp://')
+result_backend = 'redis://redis'

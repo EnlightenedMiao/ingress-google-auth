@@ -37,7 +37,6 @@ RUN pip install redis
 ENV CELERY_VERSION 4.0.2
 
 RUN pip install celery=="$CELERY_VERSION"
-ENV CELERY_BROKER_URL amqp://guest@rabbit
 
 USER phantomjs
 COPY . /tmp/
